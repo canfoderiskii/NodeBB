@@ -1,5 +1,7 @@
 FROM node:lts
 
+ARG NPM_REGISTRY
+
 RUN mkdir -p /usr/src/app && \
     chown -R node:node /usr/src/app
 WORKDIR /usr/src/app
@@ -10,6 +12,8 @@ ENV NODE_ENV $NODE_ENV
 COPY --chown=node:node install/package.json /usr/src/app/package.json
 
 USER node
+
+RUN npm config set registry ${NPM_REGISTRY}
 
 RUN npm install --only=prod && \
     npm cache clean --force
